@@ -1,0 +1,118 @@
+<html>
+    <head>
+      <style>
+  body {
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  }
+  
+  body{
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    background-color: #adadad;
+          padding: 25px;
+    }
+  
+    li{
+      padding: 5px;
+    }
+
+ul{
+  list-style-type: none;
+}
+  
+img{
+  max-height: 500px;
+}
+
+  h1{
+          background-color: rgb(200, 228, 255);
+    align-items: center;
+    padding: 10px;
+    text-align: center;
+    width: fit-content;
+      }
+      
+      #slideshow {
+  margin: 40px auto;
+  position: relative;
+  width: 620px;
+  height: 520px;
+  padding: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+#slideshow > div {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+}
+
+.emphasis {
+  font-family: vast-shadow, sans-serif;
+    font-size: 3em;
+  }
+
+  .lessEmphasis{
+    font-family: vast-shadow, sans-serif;
+    font-size: 2em;
+  }
+
+      </style>
+
+    <title>Space Images</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    
+    </head>
+    <body>
+  
+     <div align="center" border="1px solid black"><h1><span class="lessEmphasis">Search Space Images</span></h1></div>
+     <br><br> 
+     <form>
+        Search Here: <input type="text" id="searchImg" value=""><br>
+        Results: <div id="slideshow"></div>
+        <span class="emphasis" style="text-align: center">Need some ideas? Try: Black Hole, Ring, Galaxy, Star</span>
+      </form>
+  
+      <script>
+      $("#searchImg").keyup(function(){
+        console.log("called the image func");
+        const url = window.location.href +$("#searchImg").val()
+  
+        const word = $("#searchImg").val();
+        const slideImages = document.getElementById('slideshow')
+  
+        $.getJSON(url, (data) => {
+          if(data) {
+            console.log("getting data");
+              slideImages.innerHTML = ''
+              var m = 0;
+              for(let i = 0; i < 15; i++) {
+                if(data["collection"]["items"][m]["data"][0]["media_type"] == "image"){
+                  slideImages.innerHTML += `<div><img class="fixHeight" src=" ${data["collection"]["items"][m]["links"][0]["href"]}" width ="600"></div>`
+                }
+                m++
+              }
+          }
+      })
+  })    
+      </script>
+      
+<script>
+
+$("#slideshow > div:gt(0)").hide();
+
+setInterval(function() {
+  $('#slideshow > div:first')
+    //.fadeOut(1000)
+    .next()
+    //.fadeIn(1000)
+    .end()
+    .appendTo('#slideshow');
+}, 3000);
+</script>
+
+    </body>
+    </html>
